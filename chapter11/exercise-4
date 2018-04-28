@@ -1,1 +1,41 @@
 
+/*Just recognizing whether integers are inputted in decimal or hexdecimal or octal form*/
+#include <iostream>
+#include <fstream> // ifstream ofstream fstream
+#include <sstream> // string stream
+#include <iomanip>
+int main()
+{
+	using namespace std;
+	for(string line; getline(cin,line); )
+	{
+		istringstream line_iss {line};
+		if(!line_iss) return -1;
+		for(string number_string; line_iss >> number_string; )
+		{
+			istringstream number_iss1 {number_string};
+			istringstream number_iss2 {number_string};
+			if(!(number_iss1 && number_iss2)) return -1;
+			int number1 = 0;
+			int number2 = 0;
+			number_iss1 >> number1;
+			number_iss2.unsetf(ios::dec);//Enable cin to accept dec hex oct, rather than the default of only dec.
+			number_iss2.unsetf(ios::hex);
+			number_iss2.unsetf(ios::oct);
+			number_iss2 >> number2;
+			if(number1 == 0)
+			{//+-0x??? hexdecimal
+				cout << "hexdecimal : " << number2 << endl;
+			}
+			else if(number1 != number2)
+			{//+-0??? octal
+				cout << "octal : " << number2 << endl;
+			}
+			else
+			{
+				cout << "decimal : " << number2 << endl;
+			}
+		}
+	}
+	return 0;
+}
